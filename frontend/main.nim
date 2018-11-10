@@ -1,14 +1,9 @@
 include karax / prelude
 import karax / [kajax, kdom]
-import karaxutils
 import dom, times, json, strutils
 import commentform, comments
 import utils
-
-let API_ROOT ="http://0.0.0.0:5000/api"
-let key = $toUnix(getTime())
-
-
+import config
 
 type
    State = ref object

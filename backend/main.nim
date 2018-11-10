@@ -1,5 +1,5 @@
 import htmlgen, jester, db_sqlite, strutils, parseutils, marshal, md5, utils, markdown, httpclient, times, json
-
+import ../models/comment
 let
   UsernameIdent* = IdentChars
   commentMaxLength = 6000
@@ -7,20 +7,6 @@ let
   rootUrl = "https://kieran.coldron.com"
 
 let db = open("comments.db", "", "", "comments")  # user, password, database name can be nil
-
-
-type
-  Comment* = ref object
-    id*: int
-    name*: string
-    avatar*: string
-    page*: string
-    comment*: string
-    date*: int64
-
-type
-  CommentList* = ref object
-    comments* : seq[Comment]
 
 type
   Domain = object

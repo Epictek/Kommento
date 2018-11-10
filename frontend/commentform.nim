@@ -1,17 +1,13 @@
 include karax/prelude
 import karax / [vstyles, kajax, kdom]
-import error
 import options
 import httpcore
 import json
 import dom except Event
-import karaxutils
-import utils
 import times
 import strutils
 import sugar
-
-let API_ROOT="http://0.0.0.0:5000/api"
+import configs, utils, errpr
 
 type
     CommentForm* = ref object

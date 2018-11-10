@@ -1,24 +1,17 @@
 include karax / prelude
 import karax / [kajax, kdom]
-import karaxutils
 import dom, times, json, strutils
 import utils
 import httpcore
-import comment, error
+import ../models/comment, error
 import options, strformat, sequtils
-
-let API_ROOT ="http://0.0.0.0:5000/api"
+import config
 
 type
-    CommentList* = ref object
-        comments* : seq[Comment]
-
-type 
     State* = ref object
         loading: bool
         status: HttpCode
         list: Option[CommentList]
-
 
 proc newState*(): State =
     State(

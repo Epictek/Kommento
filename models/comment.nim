@@ -6,3 +6,8 @@ type
     page*: string
     comment*: string
     date*: int64
+
+type
+  CommentList* = ref object
+    comments* : seq[Comment]
+
