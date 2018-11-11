@@ -1,13 +1,11 @@
 # Package
-
 version     = "0.0.1"
 author      = "Kieran Coldron"
 description = "Kommento"
 license     = "GPL2"
 
 # Deps
-
-requires "nim >= 0.18.0"i
+requires "nim >= 0.18.0"
 requires "karax"
 requires "nim-markdown"
 requires "jester"
