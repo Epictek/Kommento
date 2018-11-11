@@ -5,10 +5,8 @@ import strutils, options, strformat, parseutils, tables
 
 proc currentPage*(): string =
     var page = $kdom.window.location.pathname
-    if page[0] == '/':
-       return page[1..^1]
-    else:
-       return page
+    page = page.strip(chars = {'/'})
+    return page
 
 proc class*(classes: varargs[tuple[name: string, present: bool]],
          defaultClasses: string = ""): string =
