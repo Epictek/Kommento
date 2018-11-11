@@ -1,19 +1,28 @@
 import htmlgen, jester, db_sqlite, strutils, parseutils, marshal, md5, utils, markdown, httpclient, times, json
+import re
 import ../models/comment
 let
   UsernameIdent* = IdentChars
   commentMaxLength = 6000
   commentMinLength = 3
-  rootUrl = "https://kieran.coldron.com"
 
-let db = open("comments.db", "", "", "comments")  # user, password, database name can be nil
+
+let db = open("comments.db", "", "", "comments")
 
 type
   Domain = object
     id: int
     name: string
 
+
+settings:
+  staticDir = "../demo"
+  
 routes:
+  get "/":
+    setStaticDir(request, "../demo")
+    resp "Derp"
+
   get "/api/domains/":
     var domains: seq[Domain]
     var owner = 1
@@ -61,6 +70,7 @@ routes:
       name = formData["name"].body
       comment = formData["comment"].body
       page = formData["page"].body
+      domain = formData["domain"].body
       key = formData["key"].body
       ip = request.ip
 
@@ -68,14 +78,15 @@ routes:
       resp Http400, "You posted this comment too quick!"
     
     var email = formData["email"].body
-
-#    if db.getValue(sql"SELECT page WHERE values (?)", page) != "":
-#      var client = newHttpClient()
-#      if client.get("$1/$2" % [rootUrl, page]).code != Http200:
-#        resp Http404, "Thread not found!"
+    echo db.getValue(sql"SELECT page FROM comment WHERE page = ?", page)
+    if db.getValue(sql"SELECT page FROM comment WHERE page = ?", page) != "":
+      var client = newHttpClient()
+      let source = "$1/$2" % [domain, page]
+      if client.get(source).code != Http200:
+            resp Http404, "Thread not found!"
 
     if comment.len > commentMaxLength:
-      resp Http400, "Comment too long (max length: $1)" % [$commentMaxLength]
+          resp Http400, "Comment too long (max length: $1)" % [$commentMaxLength]
     if comment.len < commentMinLength:
       resp Http400, "Comment text is too short (min length: $1)" % [$commentMinLength]
     if not allCharsInSet(name, UsernameIdent) or name.len > 40:
@@ -83,5 +94,5 @@ routes:
 
     if not ('@' in email and '.' in email):
       email = ""
-    db.exec(sql"INSERT INTO comment(name, email, page, comment,ip,key) values (?,?,?,?,?,?)", name, email, page, comment, ip,key)
+    db.exec(sql"INSERT INTO comment(name, email, page, comment,ip,key) values (?,?,?,?,?,?)", name, email, page, comment, ip, key)
     resp "Comment Submitted"

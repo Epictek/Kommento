@@ -1,12 +1,20 @@
 import karax / [kdom]
 import strutils, options, strformat, parseutils, tables
 
+
+
 proc currentPage*(): string =
-        var page = $kdom.window.location.pathname
+    var page = $kdom.window.location.pathname
     if page[0] == '/':
        return page[1..^1]
     else:
        return page
+
+proc class*(classes: varargs[tuple[name: string, present: bool]],
+         defaultClasses: string = ""): string =
+    result = defaultClasses & " "
+    for class in classes:
+      if class.present: result.add(class.name & " ")
 
 proc parseIntSafe*(s: string, value: var int) {.noSideEffect.} =
   ## parses `s` into an integer in the range `validRange`. If successful,

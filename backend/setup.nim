@@ -1,87 +1,48 @@
-7886),
-((NI) 501),
-((NI) 7888),
-((NI) 501),
-((NI) 7890),
-((NI) 501),
-((NI) 7892),
-((NI) 501),
-((NI) 7894),
-((NI) 501),
-((NI) 7896),
-((NI) 501),
-((NI) 7898),
-((NI) 501),
-((NI) 7900),
-((NI) 501),
-((NI) 7902),
-((NI) 501),
-((NI) 7904),
-((NI) 501),
-((NI) 7906),
-((NI) 501),
-((NI) 7908),
-((NI) 501),
-((NI) 7910),
-((NI) 501),
-((NI) 7912),
-((NI) 501),
-((NI) 7914),
-((NI) 501),
-((NI) 7916),
-((NI) 501),
-((NI) 7918),
-((NI) 501),
-((NI) 7920),
-((NI) 501),
-((NI) 7922),
-((NI) 501),
-((NI) 7924),
-((NI) 501),
-((NI) 7926),
-((NI) 501),
-((NI) 7928),
-((NI) 501),
-((NI) 8025),
-((NI) 492),
-((NI) 8027),
-((NI) 492),
-((NI) 8029),
-((NI) 492),
-((NI) 8031),
-((NI) 492),
-((NI) 8124),
-((NI) 491),
-((NI) 8140),
-((NI) 491),
-((NI) 8172),
-((NI) 493),
-((NI) 8188),
-((NI) 491)}
-;
-NIM_CONST tyArray_hzoMdoDIAjIso0166TO4hA tolowerSinglets_msy3B66fkz4kjtGRKkqJTQ = {((NI) 256),
-((NI) 501),
-((NI) 258),
-((NI) 501),
-((NI) 260),
-((NI) 501),
-((NI) 262),
-((NI) 501),
-((NI) 264),
-((NI) 501),
-((NI) 266),
-((NI) 501),
-((NI) 268),
-((NI) 501),
-((NI) 270),
-((NI) 501),
-((NI) 272),
-((NI) 501),
-((NI) 274),
-((NI) 501),
-((NI) 276),
-((NI) 501),
-((NI) 278),
-((NI) 501),
-((NI) 280),
-((NI) 5
+import db_sqlite
+
+let db = open("comments.db", "", "", "comments")
+
+db.exec(sql"""
+CREATE TABLE user(
+  id integer primary key,
+  name varchar(30),
+  email varchar(30),
+  password varchar(255)
+);
+""")
+
+db.exec(sql"""
+CREATE TABLE domain(
+  id integer primary key,
+  domain varchar(63) not null,
+  owner integer not null default 0,
+  foreign key (owner) references user(id)
+);
+""")
+
+db.exec(sql"""
+CREATE TABLE thread(
+  id interger primary key,
+  url varchar(255) not null,
+  title varchar(30),
+  domain not null default 0,
+  foreign key (domain) references domain(id)
+);
+""")
+
+db.exec(sql"""
+CREATE TABLE comment(
+  id integer primary key,
+  name varchar(30),
+  email varchar(254),
+  page varchar(32) not null,
+  comment varchar(1000) not null,
+  creation timestamp not null default (DATETIME('now')),
+  ip inet not null,
+  key varchar(100) not null,
+  spam boolean not null default 0,
+  replyTo integer,
+  thread integer not null default 0,
+  foreign key (thread) references thread(id)
+);
+""")

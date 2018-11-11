@@ -7,7 +7,7 @@ import dom except Event
 import times
 import strutils
 import sugar
-import configs, utils, errpr
+import config, utils, error
 
 type
     CommentForm* = ref object
@@ -33,6 +33,7 @@ proc onCommentClick(ev: kdom.Event, n: VNode, state: CommentForm) =
     ev.preventDefault()
     let form = dom.document.getElementById("comment-form")
     let formData = newFormData(form)
+    formdata.append("domain", kdom.window.location.protocol & "//" & kdom.window.location.host)
     formData.append("page", currentPage())
     formData.append("key", $state.key)
     ajaxPost("$1/comment" % [ API_ROOT ], @[], cast[cstring](formData), (s: int, r: kstring) => onCommentPost(s, r, state))

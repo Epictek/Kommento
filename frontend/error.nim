@@ -9,7 +9,7 @@ when defined(js):
   include karax/prelude
   import karax / [vstyles, kajax, kdom]
 
-  import karaxutils
+  import utils
 
   proc render404*(): VNode =
     result = buildHtml():
@@ -21,10 +21,6 @@ when defined(js):
         p(class="empty-subtitle"):
           text "Cannot find what you are looking for, it might have been " &
                "deleted. Sorry!"
-        tdiv(class="empty-action"):
-          a(href="/", onClick=anchorCB):
-            button(class="btn btn-primary"):
-              text "Go back home"
 
   proc renderError*(message: string, status: HttpCode): VNode =
     if status == Http404:
