@@ -24,4 +24,4 @@ proc createDom(): VNode =
     render(state.commentForm)
     renderComments()
 
-setRenderer createDom, "comments"
+setRenderer createDom, "kommento"

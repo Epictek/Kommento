@@ -7,7 +7,7 @@ license     = "GPL2"
 # Deps
 requires "nim >= 0.18.0"
 requires "karax"
-requires "nim-markdown"
+requires "markdown"
 requires "jester"
 
 task backend, "Compiles and runs the backend":

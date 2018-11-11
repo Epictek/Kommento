@@ -1,1 +1,1 @@
-let API_ROOT* ="http://0.0.0.0:5000/api"
+let API_ROOT* ="https://kommento.steinscraft.net/api"
